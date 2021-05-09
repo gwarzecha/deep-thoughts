@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/react-hooks';
+import { LOGIN_USER } from '../utils/mutations';
 
 const Login = (props) => {
   const [formState, setFormState] = useState({ email: '', password: '' });
+  const [login, { error }] = useMutation(LOGIN_USER);
 
   // update state based on form input changes
   const handleChange = (event) => {
@@ -14,14 +17,21 @@ const Login = (props) => {
   };
 
   // submit form
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = async event => {
     event.preventDefault();
 
-    // clear form values
-    setFormState({
-      email: '',
-      password: '',
-    });
+    try {
+      const { data } = await login({
+        // the spread operator in this context means that the variables field in the
+        //mutation is being set up an obj with key/value pairs that match directly
+        //to what the formState obj looks like
+        variables: { ...formState}
+      });
+
+      console.log(data);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -53,6 +63,7 @@ const Login = (props) => {
                 Submit
               </button>
             </form>
+            {error && <div>Login failed</div>}
           </div>
         </div>
       </div>
