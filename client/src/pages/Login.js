@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { LOGIN_USER } from '../utils/mutations';
+import Auth from '../utils/auth';
 
 const Login = (props) => {
   const [formState, setFormState] = useState({ email: '', password: '' });
@@ -23,12 +24,12 @@ const Login = (props) => {
     try {
       const { data } = await login({
         // the spread operator in this context means that the variables field in the
-        //mutation is being set up an obj with key/value pairs that match directly
+        //mutation is being set up as an obj with key/value pairs that match directly
         //to what the formState obj looks like
         variables: { ...formState}
       });
 
-      console.log(data);
+      Auth.login(data.login.token);
     } catch (e) {
       console.error(e);
     }
