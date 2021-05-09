@@ -8,7 +8,7 @@ const Login = (props) => {
   const [login, { error }] = useMutation(LOGIN_USER);
 
   // update state based on form input changes
-  const handleChange = (event) => {
+  const handleChange = event => {
     const { name, value } = event.target;
 
     setFormState({
@@ -26,7 +26,7 @@ const Login = (props) => {
         // the spread operator in this context means that the variables field in the
         //mutation is being set up as an obj with key/value pairs that match directly
         //to what the formState obj looks like
-        variables: { ...formState}
+        variables: { ...formState }
       });
 
       Auth.login(data.login.token);
